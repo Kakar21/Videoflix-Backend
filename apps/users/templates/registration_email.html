@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700" rel="stylesheet">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Roboto', sans-serif;
+			background-color: #f9f9f9;
+		}
+
+		a {
+			color: #2e3edf;
+			text-decoration: none;
+		}
+
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #ffffff;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.logo {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		.logo img {
+			width: 150px;
+			height: auto;
+		}
+
+		.button {
+			display: inline-block;
+			background-color: #2e3edf;
+			color: #ffffff;
+			padding: 10px 20px;
+			border-radius: 25px;
+			font-size: 16px;
+			margin: 20px 0;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.footer {
+			margin-top: 20px;
+			text-align: center;
+			color: #777;
+			font-size: 14px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="logo">
+			<img src="https://cb2c81f1ce.imgdist.com/pub/bfra/uzulcint/8nv/0kw/epe/videoflix_logo_mail.png" alt="Videoflix">
+		</div>
+		<h2 style="color: #101112;">Welcome to Videoflix!</h2>
+		<p style="color: #555;">Dear User,</p>
+		<p style="color: #555;">Thank you for registering with Videoflix. To complete your registration and verify your email address, please click the button below:</p>
+		<a href="{{ confirmation_link }}" class="button">Verify Email</a>
+		<p style="color: #555;">If you did not create an account with us, please disregard this email.</p>
+		<p style="color: #555;">Best regards,<br>The Videoflix Team</p>
+		<div class="footer">&copy; 2023 Videoflix. All rights reserved.</div>
+	</div>
+</body>
+
+</html>
