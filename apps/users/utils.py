@@ -16,7 +16,7 @@ class EmailUtility:
         recipient_list = [user.email]
 
         plain_message = f"Welcome to Videoflix! Please verify your email by clicking the link: {activation_link}"
-        html_message = render_to_string('registration_email.html', {'activation_link': activation_link})
+        html_message = render_to_string('registration_email.html', {'confirmation_link': activation_link})
 
         message = EmailMultiAlternatives(subject, plain_message, sender_email, recipient_list)
         message.attach_alternative(html_message, "text/html")

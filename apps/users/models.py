@@ -53,10 +53,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def generate_tokens(self):
         """
-        Generate and return a dictionary containing the access and refresh tokens.
+        Generates refresh and access tokens for the user.
         """
         refresh = RefreshToken.for_user(self)
         return {
-            'refresh_token': str(refresh),
-            'access_token': str(refresh.access_token),
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
         }

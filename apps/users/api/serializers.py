@@ -34,9 +34,12 @@ class UserLoginSerializer(serializers.Serializer):
             raise AuthenticationFailed("Invalid login credentials.")
         if not user.is_email_verified:
             raise AuthenticationFailed("Email verification is pending.")
+        
+        tokens = user.generate_tokens()
         return {
             'email': user.email,
-            'tokens': user.generate_tokens()
+            'refresh': tokens.get('refresh'),
+            'access': tokens.get('access')
         }
     
 class PasswordResetRequestSerializer(serializers.Serializer):
