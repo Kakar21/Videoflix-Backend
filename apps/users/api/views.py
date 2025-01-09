@@ -74,7 +74,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
             user = UserAccount.objects.get(email=email)
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
-            reset_link = f"http://localhost:4200{reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})}"
+            reset_link = f"http://localhost:4200/reset-password/{uidb64}/{token}"
             EmailUtility.send_password_reset_email(user, reset_link)
         return Response({'message': 'Password reset email sent if the email exists.'}, status=status.HTTP_200_OK)
 
@@ -93,12 +93,17 @@ class PasswordResetValidationView(generics.GenericAPIView):
             return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class PasswordResetView(generics.GenericAPIView):
-    def patch(self, request):
+    def patch(self, request, uidb64, token):
         """
         Update user password with the new one.
         """
-        serializer = SetNewPasswordSerializer(data=request.data)
+        data = request.data
+        data['uidb64'] = uidb64
+        data['token'] = token
+
+        serializer = SetNewPasswordSerializer(data=data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response({'message': 'Password reset successfully.'}, status=status.HTTP_200_OK)
     
 class EmailCheckView(generics.GenericAPIView):

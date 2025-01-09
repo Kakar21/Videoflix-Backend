@@ -61,3 +61,6 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except Exception:
             raise AuthenticationFailed("Invalid or expired reset link.")
         return attrs
+    
+    def create(self, validated_data):
+        return validated_data
