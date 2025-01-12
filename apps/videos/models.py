@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from apps.users.models import UserAccount
 
 
 class Video(models.Model):
@@ -20,3 +21,14 @@ class Video(models.Model):
     def __str__(self):
         return self.title
     
+    
+class VideoProgress(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE)
+    started = models.BooleanField(default=False)
+    last_position = models.FloatField()
+    completed = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.video.title} - {self.last_position}"
