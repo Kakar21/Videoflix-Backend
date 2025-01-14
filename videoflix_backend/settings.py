@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'apps.users',
-    'apps.videos',
+    'apps.videos.apps.VideosConfig',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
+TESTING = "test" in sys.argv
+
+if not TESTING:
+    INSTALLED_APPS = [
+        *INSTALLED_APPS,
+        "debug_toolbar",
+    ]
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        *MIDDLEWARE,
+    ]
 
 ROOT_URLCONF = 'videoflix_backend.urls'
 
@@ -133,6 +146,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -146,7 +162,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Local Server Domain
-] 
+]
 
 AUTH_USER_MODEL = 'users.UserAccount'
 
@@ -158,4 +174,26 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+}
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "PASSWORD": os.getenv('REDIS_PASSWORD'),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "videoflix"
+    }
 }

@@ -18,12 +18,19 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from debug_toolbar.toolbar import debug_toolbar_urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('apps.users.api.urls')),
     path('api/videos/', include('apps.videos.api.urls')),
 ]
+
+if not settings.TESTING:
+    urlpatterns = [
+        *urlpatterns,
+    ] + debug_toolbar_urls()
 
 # Serve media files during development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
