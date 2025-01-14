@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.videos.apps.VideosConfig',
     'django_rq',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -150,8 +151,11 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
 
 STATIC_URL = 'static/'
 
@@ -181,6 +185,7 @@ RQ_QUEUES = {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
+        # 'PASSWORD': os.getenv('REDIS_PASSWORD'),
         'DEFAULT_TIMEOUT': 360,
     },
 }
