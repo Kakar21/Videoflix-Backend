@@ -103,7 +103,7 @@ class VideoViewTests(TestCase):
         """
         Test the video list view for an unauthenticated user.
         """
-        self.client.defaults.pop('HTTP_AUTHORIZATION', None)  # Entferne Token für diesen Test
+        self.client.defaults.pop('HTTP_AUTHORIZATION', None)
         response = self.client.get(self.video_list_url)
         self.assertEqual(response.status_code, 401)
 
@@ -118,7 +118,7 @@ class VideoViewTests(TestCase):
         """
         Test the video progress retrieval for an unauthenticated user.
         """
-        self.client.defaults.pop('HTTP_AUTHORIZATION', None)  # Entferne Token für diesen Test
+        self.client.defaults.pop('HTTP_AUTHORIZATION', None)
         response = self.client.get(self.video_progress_url)
         self.assertEqual(response.status_code, 401)
 
@@ -133,77 +133,6 @@ class VideoViewTests(TestCase):
         """
         Test saving video progress for an unauthenticated user.
         """
-        self.client.defaults.pop('HTTP_AUTHORIZATION', None)  # Entferne Token für diesen Test
-        response = self.client.post(self.save_progress_url, {"last_position": 50})
-        self.assertEqual(response.status_code, 401)
-
-    """
-    Tests for views related to videos and their progress.
-    """
-
-    def setUp(self):
-        """
-        Prepare data for view tests.
-        """
-        self.client = Client()
-        self.user = UserAccount.objects.create_user(email="testuser@mail.com", password="password123")
-        self.video = Video.objects.create(
-            title="Sample Video",
-            description="This is a test video.",
-            category="documentary",
-            video_file="videos/sample.mp4",
-            thumbnail="thumbnails/sample.jpg"
-        )
-        self.video_progress = VideoProgress.objects.create(
-            user=self.user,
-            video=self.video,
-            last_position=0
-        )
-        self.video_list_url = reverse("video-list")
-        self.video_progress_url = reverse("video-progress-in-progress")
-        self.save_progress_url = reverse("video-progress-save-progress", args=[self.video.id])
-
-    def test_authenticated_video_list(self):
-        """
-        Test the video list view for an authenticated user.
-        """
-        self.client.login(email="testuser@mail.com", password="password123")
-        response = self.client.get(self.video_list_url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_unauthenticated_video_list(self):
-        """
-        Test the video list view for an unauthenticated user.
-        """
-        response = self.client.get(self.video_list_url)
-        self.assertEqual(response.status_code, 401)
-
-    def test_authenticated_video_progress(self):
-        """
-        Test the video progress retrieval for an authenticated user.
-        """
-        self.client.login(email="testuser@mail.com", password="password123")
-        response = self.client.get(self.video_progress_url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_unauthenticated_video_progress(self):
-        """
-        Test the video progress retrieval for an unauthenticated user.
-        """
-        response = self.client.get(self.video_progress_url)
-        self.assertEqual(response.status_code, 401)
-
-    def test_authenticated_save_progress(self):
-        """
-        Test saving video progress for an authenticated user.
-        """
-        self.client.login(email="testuser@mail.com", password="password123")
-        response = self.client.post(self.save_progress_url, {"last_position": 50})
-        self.assertEqual(response.status_code, 200)
-
-    def test_unauthenticated_save_progress(self):
-        """
-        Test saving video progress for an unauthenticated user.
-        """
+        self.client.defaults.pop('HTTP_AUTHORIZATION', None)
         response = self.client.post(self.save_progress_url, {"last_position": 50})
         self.assertEqual(response.status_code, 401)
