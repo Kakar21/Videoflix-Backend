@@ -5,7 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from apps.videos.models import Video, VideoProgress
 from apps.videos.api.serializers import VideoSerializer, VideoProgressSerializer, VideoProgressUpdateSerializer
-
+from rest_framework.generics import RetrieveAPIView
+import os
+from urllib.parse import unquote
 
 class VideoListView(generics.ListAPIView):
     """
@@ -14,6 +16,33 @@ class VideoListView(generics.ListAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     permission_classes = [IsAuthenticated]
+
+
+class VideoDetailView(RetrieveAPIView):
+    serializer_class = VideoSerializer
+
+    def get_queryset(self):
+        return Video.objects.all()
+    
+    def get_object(self):
+        """
+        Retrieves the video based on the file name, ignoring the path.
+        """
+        queryset = self.get_queryset()
+        raw_path = self.kwargs.get("video_file")
+
+        if not raw_path:
+            raise NotFound("Invalid video path.")
+
+        decoded_path = unquote(raw_path)
+        filename = os.path.basename(decoded_path)
+
+        video = queryset.filter(video_file__endswith=filename).first()
+
+        if not video:
+            raise NotFound(f"Video '{filename}' not found")
+
+        return video
 
 
 class VideoProgressViewSet(viewsets.ModelViewSet):

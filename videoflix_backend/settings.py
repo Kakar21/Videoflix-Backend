@@ -14,6 +14,7 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 import sys
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +42,10 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -166,6 +170,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Local Server Domain
+    "http://127.0.0.1:8000",  # Local Server Domain
 ]
 
 AUTH_USER_MODEL = 'users.UserAccount'
@@ -173,11 +178,14 @@ AUTH_USER_MODEL = 'users.UserAccount'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    ]
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),  # 7 Tage gültig
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),  # 30 Tage gültig
 }
 
 RQ_QUEUES = {
@@ -202,3 +210,9 @@ CACHES = {
         "KEY_PREFIX": "videoflix"
     }
 }
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 Week
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SAMESITE = 'Lax'
