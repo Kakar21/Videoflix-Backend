@@ -7,6 +7,6 @@ router.register(r'video-progress', VideoProgressViewSet, basename='video-progres
 
 urlpatterns = [
     path('videos/', VideoListView.as_view(), name='video-list'),
-    path('videos/<path:video_file>/', VideoDetailView.as_view(), name='video-detail'),
+    path('videos/<int:pk>/', VideoDetailView.as_view(), name='video-detail'),
     path('', include(router.urls)),
 ]

@@ -19,28 +19,22 @@ class VideoListView(generics.ListAPIView):
 
 
 class VideoDetailView(RetrieveAPIView):
+    """
+    API View, um ein einzelnes Video anhand der ID abzurufen.
+    """
     serializer_class = VideoSerializer
+    queryset = Video.objects.all()
 
-    def get_queryset(self):
-        return Video.objects.all()
-    
     def get_object(self):
         """
-        Retrieves the video based on the file name, ignoring the path.
+        Sucht das Video anhand der ID und generiert die URLs zu den Versionen.
         """
-        queryset = self.get_queryset()
-        raw_path = self.kwargs.get("video_file")
+        video_id = self.kwargs.get("pk")
 
-        if not raw_path:
-            raise NotFound("Invalid video path.")
-
-        decoded_path = unquote(raw_path)
-        filename = os.path.basename(decoded_path)
-
-        video = queryset.filter(video_file__endswith=filename).first()
-
-        if not video:
-            raise NotFound(f"Video '{filename}' not found")
+        try:
+            video = Video.objects.get(pk=video_id)
+        except Video.DoesNotExist:
+            raise NotFound(f"Video mit ID {video_id} nicht gefunden")
 
         return video
 

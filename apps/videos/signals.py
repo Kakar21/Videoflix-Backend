@@ -1,4 +1,4 @@
-from apps.videos.tasks import process_video_for_hls, remove_video_files
+from apps.videos.tasks import process_video, remove_video_files
 from apps.videos.models import Video
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
@@ -11,7 +11,7 @@ def handle_video_creation(sender, instance, created, **kwargs):
     """
     if created and instance.video_file:
         queue = django_rq.get_queue('default', autocommit=True)
-        queue.enqueue(process_video_for_hls, instance.video_file.path, instance.id, instance.thumbnail.path)
+        queue.enqueue(process_video, instance.video_file.path, instance.id, instance.thumbnail.path)
 
 @receiver(post_delete, sender=Video)
 def handle_video_deletion(sender, instance, **kwargs):
