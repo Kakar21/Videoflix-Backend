@@ -26,7 +26,7 @@ class VideoProgress(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     started = models.BooleanField(default=False)
-    last_position = models.FloatField()
+    last_position = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     completed = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
