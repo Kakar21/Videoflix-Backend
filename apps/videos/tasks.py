@@ -24,16 +24,14 @@ def compress_and_resize_thumbnail(thumbnail_path, video_id):
     """
     Compresses and resizes the video thumbnail.
     """
-    target_directory = os.path.join('media', 'thumbnails', str(video_id))
-    ensure_directory_exists(target_directory)
-    optimized_thumbnail_path = os.path.join(target_directory, 'thumbnail.jpeg')
+    optimized_thumbnail_path = os.path.join('media', 'thumbnails', f"{video_id}.jpeg")
 
     with Image.open(thumbnail_path) as img:
         img = img.convert('RGB')
         img = img.resize((120, 214))
         img.save(thumbnail_path, format='JPEG', quality=85, optimize=True)
 
-    shutil.move(thumbnail_path, optimized_thumbnail_path)
+    shutil.copy(thumbnail_path, optimized_thumbnail_path)
 
 def ensure_directory_exists(directory):
     """
@@ -92,9 +90,9 @@ def remove_video_thumbnail(video_id):
     """
     Deletes the thumbnail images.
     """
-    target_directory = os.path.join('media', 'thumbnails', str(video_id))
-    if os.path.exists(target_directory):
-        shutil.rmtree(target_directory)
+    thumbnail_path = os.path.join('media', 'thumbnails', f"{video_id}.jpeg")
+    if os.path.exists(thumbnail_path):
+        os.remove(thumbnail_path)
 
 def remove_videos(video_id):
     """
