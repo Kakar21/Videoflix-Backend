@@ -193,11 +193,12 @@ RQ_QUEUES = {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-        # 'PASSWORD': os.getenv('REDIS_PASSWORD'),
+        'PASSWORD': os.getenv('REDIS_PASSWORD'),
         'DEFAULT_TIMEOUT': 360,
     },
 }
 
+# RQ_WORKER_CLASS = 'rq_win.WindowsWorker'
 
 CACHES = {
     "default": {

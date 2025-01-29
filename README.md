@@ -57,7 +57,7 @@ This is the backend part of the Videoflix project, built with Django to power th
 7. **Start Windows RQ Worker** (if using Windows)
    - Run the following command:
      ```bash
-     rqworker -w rq_win.WindowsWorker
+     python manage.py winrqworker
      ```
 
 8. **Start the Server**
