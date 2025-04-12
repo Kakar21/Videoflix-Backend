@@ -58,13 +58,13 @@ class EmailVerificationTestCase(APITestCase):
         self.user = get_user_model().objects.create_user(**self.user_data)
         self.verify_url = reverse('verify-email')
         self.token = RefreshToken.for_user(self.user).access_token
-        self.confirmation_link = f"http://testserver{self.verify_url}?token={str(self.token)}"
+        self.confirmation_link = f"{settings.BACKEND_URL}{self.verify_url}?token={str(self.token)}"
 
     def test_valid_email_verification(self):
         """Test email verification with a valid token."""
         response = self.client.get(self.confirmation_link)
         self.assertEqual(response.status_code, 302)
-        self.assertIn('http://localhost:4200/login', response.url)
+        self.assertIn(settings.FRONTEND_URL + '/login', response.url)
         user = get_user_model().objects.get(email=self.user_data['email'])
         self.assertTrue(user.is_email_verified)
 

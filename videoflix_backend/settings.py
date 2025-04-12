@@ -40,11 +40,15 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True # TODO: Change to False in production
+
+FRONTEND_URL = os.getenv('FRONTEND_URL')
+BACKEND_URL = os.getenv('BACKEND_URL')
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    BACKEND_URL,
 ]
 
 
@@ -171,6 +175,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Local Server Domain
     "http://127.0.0.1:8000",  # Local Server Domain
+    FRONTEND_URL,
+    BACKEND_URL,
 ]
 
 AUTH_USER_MODEL = 'users.UserAccount'
@@ -215,5 +221,5 @@ CACHES = {
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 Week
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'

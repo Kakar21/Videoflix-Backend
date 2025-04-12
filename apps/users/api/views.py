@@ -58,7 +58,7 @@ class EmailVerificationView(generics.GenericAPIView):
             if not user.is_email_verified:
                 user.is_email_verified = True
                 user.save()
-            return redirect('http://localhost:4200/login')
+            return redirect(settings.FRONTEND_URL + '/login')
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Activation link expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.DecodeError:
@@ -74,7 +74,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
             user = UserAccount.objects.get(email=email)
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
-            reset_link = f"http://localhost:4200/reset-password/{uidb64}/{token}"
+            reset_link = f"{settings.FRONTEND_URL}/reset-password/{uidb64}/{token}"
             EmailUtility.send_password_reset_email(user, reset_link)
         return Response({'message': 'Password reset email sent if the email exists.'}, status=status.HTTP_200_OK)
 
