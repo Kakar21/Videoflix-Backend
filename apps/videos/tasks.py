@@ -75,16 +75,12 @@ def convert_video(video_path, resolution, width, height, bitrate):
     target = f"{file_name}_{resolution}.mp4"
 
     # Dynamische Audio-Bitrate je nach Auflösung
-    if resolution == "120p":
-        audio_bitrate = 64
-    elif resolution == "360p":
-        audio_bitrate = 96
-    elif resolution == "720p":
+    if resolution == "720p":
         audio_bitrate = 160
     elif resolution == "1080p":
         audio_bitrate = 256
     else:
-        audio_bitrate = 128  # fallback, falls was schiefgeht
+        audio_bitrate = 128
 
     print(f"Converting {video_path} to {resolution} ({width}x{height}) with audio {audio_bitrate}k...")
 
