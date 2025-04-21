@@ -71,18 +71,26 @@ def move_video_files(video_path, video_id):
 
 
 def convert_video(video_path, resolution, width, height, bitrate):
-    """
-    Converts the video to a specific resolution and bitrate.
-    """
     file_name, _ = os.path.splitext(video_path)
     target = f"{file_name}_{resolution}.mp4"
 
-    # Debugging
-    print(f"Converting {video_path} to {resolution} ({width}x{height})...")
+    # Dynamische Audio-Bitrate je nach Auflösung
+    if resolution == "120p":
+        audio_bitrate = 64
+    elif resolution == "360p":
+        audio_bitrate = 96
+    elif resolution == "720p":
+        audio_bitrate = 160
+    elif resolution == "1080p":
+        audio_bitrate = 256
+    else:
+        audio_bitrate = 128  # fallback, falls was schiefgeht
+
+    print(f"Converting {video_path} to {resolution} ({width}x{height}) with audio {audio_bitrate}k...")
 
     cmd = (
         f'ffmpeg -i "{video_path}" -vf "scale={width}:{height}" '
-        f'-c:v h264 -b:v {bitrate}k -c:a aac -b:a 128k "{target}"'
+        f'-c:v h264 -b:v {bitrate}k -c:a aac -b:a {audio_bitrate}k "{target}"'
     )
     subprocess.run(cmd, capture_output=True, shell=True)
 
